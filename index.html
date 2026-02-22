@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wedding Invitation</title>
+
+  <!-- INTERNAL CSS -->
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      scroll-behavior: smooth;
+      height: 100%;
+    }
+
+    body {
+      font-family: "Poppins", system-ui, sans-serif;
+      background:
+        radial-gradient(circle at 50% -40%, #3b3352 0%, #171320 40%, #050309 75%, #000000 100%);
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+      background-size: cover;
+      color: #f7f7f7;
+    }
+
+    .section {
+      min-height: 90vh;
+      padding: 80px 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+    }
+
+    .content {
+      width: 100%;
+      max-width: 1000px;
+      position: relative;
+      z-index: 2;
+    }
+
+    h1, h2, h3 {
+      font-family: "Playfair Display", "Times New Roman", serif;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .intro-text,
+    .timeline-desc,
+    .event-text {
+      line-height: 1.4;
+    }
+
+    /* Top strip */
+    .top-strip {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 20;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.85), transparent);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: #ffdde1;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    .top-strip.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .top-strip .center-text {
+      text-align: center;
+      flex: 1;
+    }
+
+    .top-strip span {
+      pointer-events: auto;
+    }
+
+    .top-strip-left {
+      min-width: 120px;
+    }
+    .top-strip-right {
+      min-width: 140px;
+      text-align: right;
+    }
+
+    /* Intro */
+    .intro {
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .intro-watermark {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "Playfair Display", "Times New Roman", serif;
+      font-size: min(55vw, 420px);
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      pointer-events: none;
+      z-index: 0;
+      background: radial-gradient(circle at 30% 0%, rgba(255,255,255,0.55), rgba(255,182,193,0.3));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      opacity: 0.10;
+      filter: blur(0.4px);
+      text-shadow:
+        0 0 10px rgba(255, 182, 193, 0.20),
+        0 0 22px rgba(255, 182, 193, 0.15);
+      animation:
+        introFadeUp 1.4s ease-out forwards,
+        floatNR 12s ease-in-out infinite 1.4s;
+      animation-delay: 0.1s, 1.4s;
+    }
+
+    /* NR stays bright then dulls slowly */
+    @keyframes floatNR {
+      0% {
+        transform: translateY(20px) scale(1);
+        opacity: 0.10;
+      }
+      25% {
+        transform: translateY(10px) scale(1.03);
+        opacity: 0.16;
+      }
+      70% {
+        transform: translateY(-8px) scale(1.06);
+        opacity: 0.16;
+      }
+      85% {
+        transform: translateY(5px) scale(1.03);
+        opacity: 0.12;
+      }
+      100% {
+        transform: translateY(20px) scale(1);
+        opacity: 0.08;
+      }
+    }
+
+    @keyframes introFadeUp {
+      0% {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .intro::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(255,185,210,0.20), transparent 55%),
+        radial-gradient(circle at 80% 100%, rgba(165,132,255,0.16), transparent 55%);
+      opacity: 0.9;
+      z-index: 1;
+    }
+
+    .intro::after {
+      content: "";
+      position: absolute;
+      left: -20%;
+      right: -20%;
+      bottom: -25%;
+      height: 45%;
+      background: radial-gradient(circle at 50% 0%, rgba(255,255,255,0.04), transparent 70%);
+      z-index: 1;
+    }
+
+    .intro-names-wrapper {
+      display: inline-block;
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 2;
+      transition: transform 0.35s ease, text-shadow 0.35s ease;
+      opacity: 0;
+      transform: translateY(26px);
+      animation: introFadeUp 1s ease-out forwards;
+      animation-delay: 0.4s;
+    }
+
+    .intro-names {
+      font-size: 2.8rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      background: linear-gradient(120deg, #ffffff, #ffdde1, #ffb3c6);
+      -webkit-background-clip: text;
+      color: transparent;
+      animation: floatNames 3.5s ease-in-out infinite;
+      white-space: nowrap;
+    }
+
+    .intro-names span {
+      margin: 0 8px;
+    }
+
+    @keyframes floatNames {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+      100% { transform: translateY(0); }
+    }
+
+    .intro-names-wrapper:hover,
+    .intro-names-wrapper:focus-within {
+      transform: scale(1.08) translateY(-4px);
+      text-shadow:
+        0 0 18px rgba(255, 179, 198, 0.7),
+        0 0 36px rgba(255, 179, 198, 0.45);
+    }
+
+    .intro-tagline,
+    .intro-date,
+    .intro-place,
+    .intro-text {
+      position: relative;
+      z-index: 2;
+      opacity: 0;
+      transform: translateY(26px);
+      animation: introFadeUp 0.9s ease-out forwards;
+    }
+
+    .intro-tagline {
+      font-size: 0.9rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #e2dde7;
+      margin-bottom: 10px;
+      animation-delay: 0.6s;
+    }
+
+    .intro-date {
+      font-size: 1rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #ffdde1;
+      margin-bottom: 8px;
+      animation-delay: 0.8s;
+    }
+
+    .intro-place {
+      font-size: 0.85rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #c0b7cf;
+      margin-bottom: 24px;
+      animation-delay: 1s;
+    }
+
+    .intro-text {
+      max-width: 540px;
+      margin: 0 auto;
+      font-size: 0.92rem;
+      color: #f0edf5;
+      animation-delay: 1.2s;
+    }
+
+    .save-date-reminder {
+      margin: 18px auto 0;
+      max-width: 360px;
+      text-align: center;
+      padding: 0;
+      border: none;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+      opacity: 0;
+      transform: translateY(10px) scale(0.96);
+      pointer-events: none;
+    }
+
+    .save-date-reminder.show {
+      animation: saveDatePop 0.7s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+    }
+
+    .save-date-label {
+      display: block;
+      font-size: 0.8rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #ffdde1;
+      margin-bottom: 4px;
+    }
+
+    .save-date-main {
+      display: block;
+      font-size: 1.15rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #ffffff;
+    }
+
+    @keyframes saveDatePop {
+      0% {
+        opacity: 0;
+        transform: translateY(10px) scale(0.9);
+      }
+      60% {
+        opacity: 1;
+        transform: translateY(-3px) scale(1.05);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* 2nd PAGE – TIMELINE */
+    .timeline-section {
+      padding-top: 120px;
+      opacity: 0;
+      transform: translateY(80px) scale(0.96);
+      transition: opacity 0.9s ease-out, transform 0.9s ease-out;
+    }
+
+    .timeline-section.show-timeline {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .timeline-section h2 {
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 1.4rem;
+    }
+
+    .timeline {
+      position: relative;
+      margin: 0 auto;
+      padding: 10px 0 40px;
+      max-width: 800px;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 2px;
+      background: linear-gradient(to bottom, transparent, #ffb3c6, transparent);
+      transform: translateX(-50%);
+    }
+
+    .timeline-item {
+      position: relative;
+      width: 50%;
+      padding: 18px 28px;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+
+    .timeline-item.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .timeline-item .dot {
+      position: absolute;
+      top: 26px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #ffb3c6;
+      box-shadow: 0 0 14px rgba(255, 179, 198, 0.9);
+      border: 2px solid #1e1e1e;
+    }
+
+    .timeline-item.left {
+      left: 0;
+      text-align: right;
+    }
+
+    .timeline-item.left .dot {
+      right: -7px;
+    }
+
+    .timeline-item.right {
+      left: 50%;
+    }
+
+    .timeline-item.right .dot {
+      left: -7px;
+    }
+
+    .timeline-title {
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #ffdde1;
+      margin-bottom: 6px;
+    }
+
+    .timeline-time {
+      font-size: 0.8rem;
+      color: #bbbbbb;
+      margin-bottom: 4px;
+    }
+
+    .timeline-desc {
+      font-size: 0.8rem;
+      color: #d7d7d7;
+    }
+
+    .type-line {
+      display: inline-block;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 2px solid rgba(255,255,255,0.8);
+    }
+    .type-line.done {
+      border-right-color: transparent;
+    }
+
+    /* 3rd PAGE – LOCATIONS */
+    .locations-section {
+      opacity: 0;
+      transform: translateY(80px) scale(0.96);
+      transition: opacity 0.9s ease-out, transform 0.9s ease-out;
+    }
+
+    .locations-section.show-locations {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .locations-section h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 1.4rem;
+    }
+
+    .locations-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .location-card {
+      background: radial-gradient(circle at top, #2c2337 0, #15101d 60%, #050309 100%);
+      border-radius: 18px;
+      padding: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 12px 26px rgba(0, 0, 0, 0.85);
+      overflow: hidden;
+      position: relative;
+      animation: floatCard 7s ease-in-out infinite;
+      transform-origin: center;
+      transition:
+        transform 0.2s ease-out,
+        box-shadow 0.2s ease-out,
+        border-color 0.2s ease-out;
+    }
+
+    @keyframes floatCard {
+      0%   { transform: translateY(0px); }
+      50%  { transform: translateY(-8px); }
+      100% { transform: translateY(0px); }
+    }
+
+    .location-card:hover {
+      transform: translateY(-10px) scale(1.04);
+      box-shadow:
+        0 18px 40px rgba(0, 0, 0, 1),
+        0 0 22px rgba(255, 179, 198, 0.45);
+      border-color: rgba(255, 221, 225, 0.8);
+    }
+
+    .location-title {
+      font-size: 0.9rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #ffdde1;
+      margin-bottom: 6px;
+    }
+
+    .location-sub {
+      font-size: 0.78rem;
+      color: #c9c9c9;
+      margin-bottom: 10px;
+    }
+
+    .map-wrap {
+      position: relative;
+      width: 100%;
+      padding-top: 60%;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 10px 26px rgba(0,0,0,0.8);
+    }
+
+    .map-wrap iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    /* 4th PAGE – EVENTS */
+    .events-section {
+      opacity: 0;
+      transform: translateY(90px) scale(0.95);
+      transition: opacity 0.9s ease-out, transform 0.9s ease-out;
+    }
+
+    .events-section.show-events {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .events-section h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 1.4rem;
+    }
+
+    .events-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .event-card {
+      background: radial-gradient(circle at top, #31243f 0, #17101f 55%, #050309 100%);
+      border-radius: 18px;
+      padding: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.9);
+      overflow: hidden;
+      position: relative;
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      transform: translateY(40px) scale(0.96);
+      transition:
+        opacity 0.6s ease-out,
+        transform 0.6s ease-out,
+        box-shadow 0.25s ease-out,
+        border-color 0.25s ease-out;
+    }
+
+    .event-card.show-card {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .event-card::before {
+      content: "";
+      position: absolute;
+      inset: -30%;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.06), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(255,182,193,0.18), transparent 55%);
+      opacity: 0;
+      transition: opacity 0.25s ease-out;
+      pointer-events: none;
+    }
+
+    .event-image {
+      width: 100%;
+      height: 150px;
+      border-radius: 14px;
+      background: #1e1e1e;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+
+    .event-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transform: scale(1.02);
+      transition: transform 0.35s ease-out;
+    }
+
+    .event-title {
+      font-size: 0.98rem;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: #ffdde1;
+      margin-bottom: 6px;
+    }
+
+    .event-text {
+      font-size: 0.82rem;
+      color: #e1dce9;
+      flex: 1;
+    }
+
+    .event-card:hover {
+      transform: translateY(-8px) scale(1.03);
+      box-shadow:
+        0 18px 44px rgba(0, 0, 0, 1),
+        0 0 24px rgba(255, 179, 198, 0.5);
+      border-color: rgba(255, 221, 225, 0.9);
+    }
+
+    .event-card:hover::before {
+      opacity: 1;
+    }
+
+    .event-card:hover .event-image img {
+      transform: scale(1.07);
+    }
+
+    /* 5th PAGE – COUPLE PHOTO (NO BOX) + HEART IMAGE BUTTON */
+    .couple-names {
+      font-family: "Playfair Display", "Times New Roman", serif;
+      font-size: 2.3rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      background: linear-gradient(120deg, #ffffff, #ffdde1, #ffb3c6);
+      -webkit-background-clip: text;
+      color: transparent;
+      position: relative;
+      display: inline-block;
+      padding: 6px 12px;
+      margin-bottom: 18px;
+      animation: coupleGlow 4s ease-in-out infinite;
+    }
+
+    .couple-names span {
+      margin: 0 10px;
+    }
+
+    .couple-names::after {
+      content: "";
+      position: absolute;
+      left: 10%;
+      right: 10%;
+      bottom: -6px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #ffb3c6, transparent);
+      opacity: 0.85;
+      animation: underlinePulse 3s ease-in-out infinite;
+    }
+
+    .couple-section {
+      opacity: 0;
+      transform: translateY(80px) scale(0.96);
+      transition: opacity 0.9s ease-out, transform 0.9s ease-out;
+      text-align: center;
+    }
+
+    .couple-section.show-couple {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .couple-section h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 1.4rem;
+    }
+
+    .couple-photo-wrapper {
+      max-width: 640px;
+      margin: 0 auto 10px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 0 0 rgba(0,0,0,0);
+      border: none;
+      opacity: 0;
+      transform: translateY(30px) scale(0.98);
+      transition:
+        opacity 0.6s ease-out,
+        transform 0.6s ease-out;
+    }
+
+    .couple-photo-wrapper.show-photo {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .couple-photo-wrapper img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+      border-radius: 26px;
+      box-shadow:
+        0 0 40px rgba(0,0,0,0.65),
+        0 0 80px rgba(0,0,0,0.75);
+    }
+
+    .couple-caption {
+      font-size: 0.9rem;
+      color: #f0ecfa;
+      margin-top: 6px;
+      margin-bottom: 8px;
+    }
+
+    .heart-btn {
+      position: relative;
+      width: 140px;
+      height: 90px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      margin: 4px auto 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      outline: none;
+    }
+
+    /* image without round border */
+    .heart-image {
+      width: 120px;   /* increased */
+      height: 110px;  /* increased */
+      object-fit: contain;
+      transform: translateY(4px);
+      border-radius: 0;
+      box-shadow: none;
+      transition: transform 0.22s ease;
+    }
+
+    .heart-btn:hover .heart-image {
+      transform: translateY(-5px) scale(1.08);
+    }
+
+    .couple-note {
+      margin-top: 6px;
+      font-size: 0.82rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #dcd3ea;
+    }
+
+    /* Hearts layer */
+    .hearts-container {
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      z-index: 10;
+    }
+
+    .floating-heart {
+      position: absolute;
+      font-size: 1.6rem;
+      color: #ff4b6a;
+      opacity: 0;
+      animation: floatUp 4s linear forwards;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) scale(0.8);
+        opacity: 0;
+      }
+      20% {
+        opacity: 0.9;
+      }
+      100% {
+        transform: translateY(-110vh) scale(1.3);
+        opacity: 0;
+      }
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px 10px 10px;
+      font-size: 0.75rem;
+      color: #888;
+      background: #020202;
+    }
+
+    .footer-love-note {
+      margin-top: 6px;
+      font-size: 0.8rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #ffdde1;
+    }
+
+    @media (max-width: 768px) {
+      .section {
+        padding: 80px 16px 40px;
+      }
+      .timeline::before {
+        left: 8px;
+        transform: none;
+      }
+      .timeline-item {
+        width: 100%;
+        padding: 18px 18px 18px 32px;
+      }
+      .timeline-item.left,
+      .timeline-item.right {
+        left: 0;
+        text-align: left;
+      }
+      .timeline-item .dot {
+        left: -1px;
+        right: auto;
+      }
+      .intro-names {
+        font-size: 2.2rem;
+      }
+      .top-strip-left,
+      .top-strip-right {
+        font-size: 0.7rem;
+      }
+      .intro-watermark {
+        font-size: min(70vw, 320px);
+      }
+      .events-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hearts layer -->
+  <div class="hearts-container" id="hearts"></div>
+
+  <!-- Top heading strip -->
+  <div class="top-strip" id="topStrip">
+    <span class="top-strip-left">SRIRASTHU</span>
+    <span class="center-text">SUBHAMASTHU</span>
+    <span class="top-strip-right">AVIGHNAMASTHU</span>
+  </div>
+
+  <!-- INTRO -->
+  <section class="section intro" id="intro">
+    <div class="intro-watermark">NR</div>
+
+    <div class="content">
+      <div class="intro-names-wrapper" tabindex="0">
+        <div class="intro-names"><br><br><br><br><br>
+          Navya<span>&</span>Rajababu
+        </div>
+      </div>
+
+      <div class="intro-tagline">Together With Their Families</div>
+      <div class="intro-date">Saturday · 7th March 2026</div>
+      <div class="intro-place">Paralakhemundi · Palasa · India</div>
+      <p class="intro-text">
+        With great joy in our hearts, we invite you to witness and bless the beginning of our forever.
+        Join us as we celebrate love, laughter, and a lifetime of togetherness.
+      </p>
+
+      <div class="save-date-reminder" id="saveDateReminder"><br><br><br>
+        <span class="save-date-label">Save the Date</span>
+        <span class="save-date-main">7 · March · 2026</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2nd PAGE – TIMELINE -->
+  <section class="section timeline-section" id="timeline">
+    <div class="content">
+      <h2 id="timelineTitle" data-text="Wedding Timeline"></h2>
+
+      <div class="timeline">
+        <div class="timeline-item left">
+          <div class="dot"></div>
+          <div class="timeline-title">Bride Making</div>
+          <div class="timeline-time">5th March</div>
+          <div class="timeline-desc">
+            We warmly invite you to grace the occasion and bless with your love and good wishes.
+          </div>
+        </div>
+
+        <div class="timeline-item right">
+          <div class="dot"></div>
+          <div class="timeline-title">Haldi</div>
+          <div class="timeline-time">6th March</div>
+          <div class="timeline-desc">
+            Join us to celebrate the Haldi Ceremony of our lovely bride-to-be,
+            and shower her with your love and golden blessings.
+          </div>
+        </div>
+
+        <div class="timeline-item right">
+          <div class="dot"></div>
+          <div class="timeline-title">Sumuhurtham</div>
+          <div class="timeline-time">7th March · 2:28 AM</div>
+          <div class="timeline-desc">
+            We warmly invite you to attend the Sumuhurtham
+            and bless the newlyweds as they embark on their lifelong journey.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3rd PAGE – LOCATIONS -->
+  <section class="section locations-section" id="locations">
+    <div class="content">
+      <h2 id="locationsTitle" data-text="Venues & Locations"></h2>
+
+      <div class="locations-grid">
+        <div class="location-card">
+          <div class="location-title">House</div>
+          <div class="location-sub"></div>
+          <div class="map-wrap">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3826.6644677255617!2d84.093003!3d18.776815000000003!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTjCsDQ2JzM2LjUiTiA4NMKwMDUnMzQuOCJF!5e1!3m2!1sen!2sin!4v1770897820134!5m2!1sen!2sin"
+              width="600" height="450" style="border:0;" allowfullscreen=""
+              loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+        </div>
+
+        <div class="location-card">
+          <div class="location-title">Lunch</div>
+          <div class="location-sub">5th March · Town Hall</div>
+          <div class="map-wrap">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3826.6152967709213!2d84.0927246!3d18.7789804!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a3cf765cff18a4d%3A0x351f4c1cd634bd93!2sTown%20Hall!5e1!3m2!1sen!2sin!4v1770897742617!5m2!1sen!2sin"
+              width="600" height="450" style="border:0;" allowfullscreen=""
+              loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+        </div>
+
+        <div class="location-card">
+          <div class="location-title">Wedding & Reception</div>
+          <div class="location-sub">7th March</div>
+          <div class="map-wrap">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3827.0589521126217!2d84.4208589!3d18.759433899999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a3d07c624517473%3A0x3eb101410bee6db5!2sSri%20Ramalayam%20Temple%20Complex!5e1!3m2!1sen!2sin!4v1770897863474!5m2!1sen!2sin"
+              width="600" height="450" style="border:0;" allowfullscreen=""
+              loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4th PAGE – EVENTS -->
+  <section class="section events-section" id="events">
+    <div class="content">
+      <h2 id="eventsTitle" data-text="Wedding Events"></h2>
+
+      <div class="events-grid">
+        <div class="event-card">
+          <div class="event-image">
+            <img src="lun.jpg" alt="Luncj" />
+          </div>
+          <div class="event-title">Lunch</div>
+          <div class="event-text">
+            Our adventure begins with a feast. Join us!
+          </div>
+        </div>
+
+        <div class="event-card">
+          <div class="event-image">
+            <img src="hal.jpeg" alt="Haldi ceremony" />
+          </div>
+          <div class="event-title">Haldi</div>
+          <div class="event-text">
+            A splash of turmeric, laughter, and golden memories.
+          </div>
+        </div>
+
+        <div class="event-card">
+          <div class="event-image">
+            <img src="mar.jpeg" alt="Wedding ceremony" />
+          </div>
+          <div class="event-title">Wedding</div>
+          <div class="event-text">
+            Join us as we tie the knot and start our forever!
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5th PAGE – COUPLE PHOTO (NO BOX) + HEART IMAGE -->
+  <section class="section couple-section" id="couple">
+    <div class="content">
+      <div class="couple-names">
+        Navya<span>&</span>Rajababu
+      </div>
+      <div class="couple-photo-wrapper">
+        <img src="img.JPG" alt="Navya and Rajababu together">
+      </div>
+
+      <br><br>
+
+      <button class="heart-btn" onclick="spreadHearts()">
+        <img src="sii.png" alt="Heart" class="heart-image">
+      </button>
+      <br>
+      <div class="couple-note">
+        Tap the heart to send your love and blessings.
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>
+      Made with 💖 By 0413
+  </footer>
+
+  <!-- JS -->
+  <script>
+    function spreadHearts() {
+      const container = document.getElementById("hearts");
+
+      for (let i = 0; i < 40; i++) {
+        const heart = document.createElement("div");
+        heart.classList.add("floating-heart");
+        heart.textContent = "💖";
+
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.bottom = Math.random() * 20 - 10 + "vh";
+
+        const duration = 3 + Math.random() * 3;
+        const delay = Math.random() * 0.8;
+        heart.style.animationDuration = duration + "s";
+        heart.style.animationDelay = delay + "s";
+
+        container.appendChild(heart);
+
+        setTimeout(() => {
+          heart.remove();
+        }, (duration + delay) * 1000);
+      }
+    }
+
+    const topStrip = document.getElementById("topStrip");
+    window.addEventListener("scroll", () => {
+      const threshold = window.innerHeight * 0.5;
+      if (window.scrollY > threshold) {
+        topStrip.classList.add("hidden");
+      } else {
+        topStrip.classList.remove("hidden");
+      }
+    });
+
+    window.addEventListener("load", () => {
+      const reminder = document.getElementById("saveDateReminder");
+      setTimeout(() => {
+        if (reminder) {
+          reminder.classList.add("show");
+        }
+      }, 2000);
+    });
+
+    function typeLineOnce(el, text, speed, callback) {
+      el.textContent = "";
+      el.classList.add("type-line");
+      let i = 0;
+      const timer = setInterval(() => {
+        el.textContent += text.charAt(i);
+        i++;
+        if (i >= text.length) {
+          clearInterval(timer);
+          el.classList.add("done");
+          if (callback) callback();
+        }
+      }, speed);
+    }
+
+    const timelineSection = document.querySelector(".timeline-section");
+    const timelineTitle = document.getElementById("timelineTitle");
+    const timelineItems = document.querySelectorAll(".timeline-item");
+    let timelineTyped = false;
+
+    const sectionObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            timelineSection.classList.add("show-timeline");
+            if (!timelineTyped) {
+              timelineTyped = true;
+              const text = timelineTitle.getAttribute("data-text") || "Wedding Timeline";
+              typeLineOnce(timelineTitle, text, 70);
+            }
+            sectionObserver.unobserve(timelineSection);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+    sectionObserver.observe(timelineSection);
+
+    const itemObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            itemObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.35 }
+    );
+    timelineItems.forEach((item) => itemObserver.observe(item));
+
+    const locationsSection = document.querySelector(".locations-section");
+    const locationsTitle = document.getElementById("locationsTitle");
+    let locationsTyped = false;
+
+    const locationsObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            locationsSection.classList.add("show-locations");
+            if (!locationsTyped) {
+              locationsTyped = true;
+              const txt = locationsTitle.getAttribute("data-text") || "Venues & Locations";
+              typeLineOnce(locationsTitle, txt, 70);
+            }
+            locationsObserver.unobserve(locationsSection);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+    locationsObserver.observe(locationsSection);
+
+    // events title typing animation
+    const eventsSection = document.querySelector(".events-section");
+    const eventsTitle = document.getElementById("eventsTitle");
+    const eventCards = document.querySelectorAll(".event-card");
+    let eventsTyped = false;
+
+    const eventsObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            eventsSection.classList.add("show-events");
+            if (!eventsTyped && eventsTitle) {
+              eventsTyped = true;
+              const txt = eventsTitle.getAttribute("data-text") || "Wedding Events";
+              typeLineOnce(eventsTitle, txt, 70);
+            }
+            eventsObserver.unobserve(eventsSection);
+          }
+        });
+      },
+      { threshold: 0.25 }
+    );
+    eventsObserver.observe(eventsSection);
+
+    const eventCardsObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("show-card");
+            eventCardsObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+    eventCards.forEach((card) => eventCardsObserver.observe(card));
+
+    // 5th page animation
+    const coupleSection = document.querySelector(".couple-section");
+    const couplePhotoWrapper = document.querySelector(".couple-photo-wrapper");
+
+    if (coupleSection && couplePhotoWrapper) {
+      const coupleObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              coupleSection.classList.add("show-couple");
+              couplePhotoWrapper.classList.add("show-photo");
+              coupleObserver.unobserve(coupleSection);
+            }
+          });
+        },
+        { threshold: 0.3 }
+      );
+      coupleObserver.observe(coupleSection);
+    }
+  </script>
+</body>
+</html>
